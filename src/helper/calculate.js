@@ -125,33 +125,29 @@ export default function calculate(state, name) {
     }
 
     //Everything else is an operation
-    if (state.operand) {
-        //If there's already an operation, perform that operation and queue up this one
-        if (state.operation) {
+    //If there's already an operation, perform that operation and queue up this one
+    if (state.operation) {
+        return {
+            total: operate(state.total, state.operand, state.operation),
+            operand: null,
+            operation: name
+        }
+    }
+    //Otherwise, just queue up the operation
+    else {
+        if (state.operand) {
             return {
-                total: operate(state.total, state.operand, state.operation),
+                total: state.operand,
                 operand: null,
+                operation: name
+            };
+        }
+        else {
+            return {
                 operation: name
             }
         }
-        //Otherwise, just queue up the operation
-        else {
-            if (state.operand) {
-                return {
-                    total: state.operand,
-                    operand: null,
-                    operation: name
-                };
-            }
-            else {
-                return {
-                    operation: name
-                }
-            }
-        }
     }
-
-    return {};
 }
 
 function operate(total, operand, operation) {
@@ -160,7 +156,7 @@ function operate(total, operand, operation) {
     let result = '';
 
     //Don't divide by zero
-    if (second === '0' && operation === '÷') {
+    if (second === '0' && (operation === '÷' || operation === 'x')) {
         second = '1';
     }
 
