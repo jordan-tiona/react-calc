@@ -136,11 +136,18 @@ export default function calculate(state, name) {
         }
         //Otherwise, just queue up the operation
         else {
-            return {
-                total: state.operand,
-                operand: null,
-                operation: name
-            };
+            if (state.operand) {
+                return {
+                    total: state.operand,
+                    operand: null,
+                    operation: name
+                };
+            }
+            else {
+                return {
+                    operation: name
+                }
+            }
         }
     }
 
